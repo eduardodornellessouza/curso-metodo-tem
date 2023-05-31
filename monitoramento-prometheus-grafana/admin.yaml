@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Secret
+data:
+  admin-user: YWRtaW4=
+  admin-password: c0NhN3Q0R2VAeiFBQU4=
+metadata:
+  name: grafana-admin
+  namespace: l4-mntg-prometheus
+type: Opaque
