@@ -13,7 +13,9 @@ https://learn.microsoft.com/pt-br/azure/developer/terraform/create-k8s-cluster-w
 ## Criar um par de chaves SSH
 Use o comando ssh-keygen para gerar arquivos de chave SSH pública e privada. Por padrão, esses arquivos são criados no diretório ~/.ssh. Você pode especificar um local diferente e uma senha opcional (frase secreta) para acessar o arquivo de chave privada. Se um par de chaves SSH com o mesmo nome existir no local especificado, esses arquivos serão substituídos.
 
+```
 ssh-keygen -m PEM -t rsa -b 4096
+```
 
 ## Ferramenta operador Kubernetes - kubectl
 https://kubernetes.io/releases/download/
@@ -25,7 +27,9 @@ O padrão mais comum é entrar interativamente no Azure, criar uma entidade de s
 
 export MSYS_NO_PATHCONV=1
 
+```
 az ad sp create-for-rbac --name spn_aks_metodotem --role Contributor --scopes /subscriptions/dae6c8b4-a025-4ed1-85c4-9aed73f7eb6f
+```
 
 {
   "appId": "dcbbbd08-dc47-4628-8492-1563ddabeb9d",
