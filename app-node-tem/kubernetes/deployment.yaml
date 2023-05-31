@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-node-tem
+  labels:
+    app.kubernetes.io/name: app-node-tem
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: app-node-tem
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: app-node-tem
+    spec:
+      containers:
+      - name: app-node-tem
+        image: acrcursometodotem01.azurecr.io/nodeapp:latest
+        ports:
+        - containerPort: 80

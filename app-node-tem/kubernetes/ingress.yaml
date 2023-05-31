@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-node-ingress
+  labels:
+    app.kubernetes.io/name: app-node-tem
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: "app-node.edudornellessouza.com.br"
+    http:
+      paths:
+      - pathType: ImplementationSpecific
+        path: "/"
+        backend:
+          service:
+            name: app-node-service
+            port:
+              number: 8080

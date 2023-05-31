@@ -1,0 +1,64 @@
+pool:
+  name: pipelines
+
+variables:
+- group: "app-node-tem-deploy"
+
+stages:
+  - stage: build
+    displayName: "Build and Push Docker Image"
+
+    jobs:
+    - job:
+      steps: 
+        - script: |
+            cd $(Build.SourcesDirectory)
+            curl -fsSL https://get.docker.com -o get-docker.sh
+            sudo chmod 777 get-docker.sh
+            sudo ./get-docker.sh
+            sudo chmod 777 /var/run/docker.sock
+
+            docker login acrcursometodotem01.azurecr.io -u $(acr_user) -p $(acr_pass)
+            docker images 
+            docker build -t acrcursometodotem01.azurecr.io/nodeapp:$(Build.BuildId) ./node-app/.
+            docker push acrcursometodotem01.azurecr.io/nodeapp:$(Build.BuildId)
+            docker tag acrcursometodotem01.azurecr.io/nodeapp:$(Build.BuildId) acrcursometodotem01.azurecr.io/nodeapp:latest
+            docker push acrcursometodotem01.azurecr.io/nodeapp:latest 
+          displayName: 'docker build and push'
+
+  - stage: deploy
+    displayName: "Deploy APP On Kubernetes"
+    dependsOn: build
+
+    jobs:
+    - job:
+      steps: 
+        - task: KubernetesManifest@1
+          displayName: 'deploy service'
+          inputs:
+            connectionType: azureResourceManager
+            azureSubscriptionConnection: 'aks_metodo_tem'
+            azureResourceGroup: 'rg-adjusted-crane'
+            kubernetesCluster: k8stest
+            namespace: 'app-node'
+            manifests: $(Build.SourcesDirectory)/kubernetes/service.yaml
+
+        - task: KubernetesManifest@1
+          displayName: 'deploy deployment'
+          inputs:
+            connectionType: azureResourceManager
+            azureSubscriptionConnection: 'aks_metodo_tem'
+            azureResourceGroup: 'rg-adjusted-crane'
+            kubernetesCluster: k8stest
+            namespace: 'app-node'
+            manifests: $(Build.SourcesDirectory)/kubernetes/deployment.yaml
+
+        - task: KubernetesManifest@1
+          displayName: 'deploy ingress'
+          inputs:
+            connectionType: azureResourceManager
+            azureSubscriptionConnection: 'aks_metodo_tem'
+            azureResourceGroup: 'rg-adjusted-crane'
+            kubernetesCluster: k8stest
+            namespace: 'app-node'
+            manifests: $(Build.SourcesDirectory)/kubernetes/ingress.yaml
