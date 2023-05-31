@@ -28,16 +28,16 @@ O padrão mais comum é entrar interativamente no Azure, criar uma entidade de s
 
 ```
     $ export MSYS_NO_PATHCONV=1
-    $ az ad sp create-for-rbac --name spn_aks_metodotem --role Contributor --scopes /subscriptions/dae6c8b4-a025-4ed1-85c4-9aed73f7eb6f
+    $ az ad sp create-for-rbac --name spn_aks_metodotem --role Contributor --scopes /subscriptions/<sub-id>
 ```
 
 Response:
 ```
 {
-  "appId": "dcbbbd08-dc47-4628-8492-1563ddabeb9d",
+  "appId": "<appId>",
   "displayName": "spn_aks_metodotem",
-  "password": "f328Q~Uj8vdwpyvRNq46YHB1IU-n3WskXw_CuaQG",
-  "tenant": "505bf011-8306-408f-afc5-cf8fc8c2927f"
+  "password": "<pass>",
+  "tenant": "<tenant>"
 }
 ```
 
@@ -50,7 +50,7 @@ Response:
 ```
 ## Conectando no cluster
 ```
-    $ az account set --subscription dae6c8b4-a025-4ed1-85c4-9aed73f7eb6f
+    $ az account set --subscription <sub-id>
     $ az aks get-credentials --resource-group rg-adjusted-crane --name k8stest
 ```
 ## Criando load balancer
@@ -113,8 +113,8 @@ Criando ingress:
 ## Azure Devops - Primeiro pipeline
 ```
     $ curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-    $ az login --service-principal -u dcbbbd08-dc47-4628-8492-1563ddabeb9d -p f328Q~Uj8vdwpyvRNq46YHB1IU-n3WskXw_CuaQG --tenant 505bf011-8306-408f-afc5-cf8fc8c2927f
-    $ az account set --subscription dae6c8b4-a025-4ed1-85c4-9aed73f7eb6f
+    $ az login --service-principal -u <app-id> -p <pass> --tenant <tenant-id>
+    $ az account set --subscription <sub-id>
     $ az aks get-credentials --resource-group rg-adjusted-crane --name k8stest
 ```
 
@@ -124,7 +124,7 @@ Gerar chaves para acesso
 
 Conectar:
 ```
-    $ docker login acrcursometodotem01.azurecr.io -u acrcursometodotem01 -p CU5rjaj72WeLTRqcBm8EVhIQDpi6K9vOAVmmsBTjmr+ACRBiy6Za
+    $ docker login acrcursometodotem01.azurecr.io -u acrcursometodotem01 -p <acr-pass>
 ```
 ## Criar a VMSS
 Criar Conjunto de escalas da máquina virtual (vmss) no mesmo resource group do AKS.
