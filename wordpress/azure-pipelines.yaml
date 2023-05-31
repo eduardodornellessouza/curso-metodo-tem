@@ -1,0 +1,25 @@
+pool:
+  name: pipelines
+
+variables:
+- group: "wordpress-deploy"
+
+steps:
+- script: |
+   sudo apt update
+   sudo apt install unzip
+   echo "O nome do meu AKS é $(aksname)"
+  displayName: 'install tools'
+
+- task: HelmInstaller@0
+  displayName: 'Install Helm 2.14.1'
+
+- script: |
+   az account set --subscription $(subid)
+   az aks get-credentials --resource-group $(rgname) --name $(aksname) 
+  displayName: 'aks connection'
+
+- script: |
+   ls -la
+   helm upgrade -i wordpress . -f ./values.yaml -n wordpress
+  displayName: 'helm upgrade'
