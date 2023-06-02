@@ -1,0 +1,11 @@
+NAME
+app-node
+cert-manager
+default
+ingress-basic
+kube-node-lease
+kube-public
+kube-system
+monitoring
+telegram-status
+wordpress

@@ -1,0 +1,17 @@
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cronjob-monitoring-kubernetes
+rules:
+  - verbs:
+      - get
+      - watch
+      - list
+      - delete
+    apiGroups:
+      - ''
+    resources:
+      - pods
+      - namespaces
+      - nodes

@@ -1,0 +1,41 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: monitoring-kubernetes
+  namespace: telegram-status
+spec:
+  schedule: 0 11 * * 1-5
+  concurrencyPolicy: Allow
+  suspend: false
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+            - name: configmap
+              configMap:
+                name: configmap-telegram-status
+                defaultMode: 420
+          containers:
+            - name: monitoring-runner
+              image: alpine/k8s:1.24.6
+              command:
+                - /bin/bash
+              args:
+                - /monitoring/checklist.sh
+              resources: {}
+              volumeMounts:
+                - name: configmap
+                  mountPath: /monitoring
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+              imagePullPolicy: Always
+          restartPolicy: OnFailure
+          terminationGracePeriodSeconds: 30
+          dnsPolicy: ClusterFirst
+          serviceAccountName: sa-cronjob-monitoring-kubernetes
+          serviceAccount: sa-cronjob-monitoring-kubernetes
+          securityContext: {}
+          schedulerName: default-scheduler
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
