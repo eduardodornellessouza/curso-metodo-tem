@@ -1,4 +1,0 @@
-NAME                                STATUS   ROLES   AGE     VERSION
-aks-agentpool-42497174-vmss00000c   Ready    agent   5h11m   v1.25.6
-aks-agentpool-42497174-vmss00000d   Ready    agent   5h11m   v1.25.6
-aks-agentpool-42497174-vmss00000e   Ready    agent   5h11m   v1.25.6

@@ -112,8 +112,8 @@ data:
   send.sh: |
     #!/bin/bash
 
-    export TOKEN="6059455146:AAGNNBejs6yMNOA7NQR3sGHUuV0s3ehZ9Gc"
-    export ID="-939573571"
+    export TOKEN="6202648270:AAHCnT_QewtzJ-NrE3Dm-Pl7C3xd3_h7b8s"
+    export ID="-652110136"
     export URL="https://api.telegram.org/bot$TOKEN/sendMessage"
     export MSG=$(cat ./send.txt)
 
